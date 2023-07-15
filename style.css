@@ -11,3 +11,7 @@ h1 {
     margin-bottom: 5px;
     font-size: 3.5em;
 }
+
+.center {
+    text-align: center;
+}
