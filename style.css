@@ -86,3 +86,8 @@ h1 {
 .button-name {
     color: grey;
 }
+
+/* controller */
+.selected-button {
+    fill: rgb(231, 24, 24);
+}
