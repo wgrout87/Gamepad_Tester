@@ -59,13 +59,17 @@ function createButtonHtml(index, value) {
 
 function createAxesLayout(axes) {
     const buttonsArea = document.getElementById("buttons");
-    for (let i = 0; i < buttons.length; i++) {
-        buttonArea.innerHTML += createAxesHtml(axes, i);
+    for (let i = 0; i < axes.length; i++) {
+        buttonsArea.innerHTML += createAxesHtml(axes, i);
     }
 };
 
 function createAxesHtml(axes, index) {
-
+    console.log(axes);
+    return `<div id='axis-${index}' class='axis'>
+                <div class='axis-name'>AXIS ${index}</div>
+                <div class='axis-value'>${axes[index].toFixed(4)}</div>
+            </div>`;
 };
 
 function updateButtonOnGrid(index, value) {
@@ -104,8 +108,10 @@ function handleButtons(buttons) {
 
 function updateStick(elementId, leftRightAxis, upDownAxis) {
     const multiplier = 25;
-    const stickLeftRight = leftRightAxis * multiplier;
-    const stickUpDown = upDownAxis * multiplier;
+    const leftRightAxisMovement = leftRightAxis > .2 || leftRightAxis < -.2 ? leftRightAxis : 0;
+    const upDownAxisMovement = upDownAxis > .2 || upDownAxis < -.2 ? upDownAxis : 0;
+    const stickLeftRight = leftRightAxisMovement * multiplier;
+    const stickUpDown = upDownAxisMovement * multiplier;
 
     const stick = document.getElementById(elementId);
     const x = Number(stick.dataset.originalXPosition);
@@ -113,12 +119,23 @@ function updateStick(elementId, leftRightAxis, upDownAxis) {
 
     stick.setAttribute('cx', x + stickLeftRight);
     stick.setAttribute('cy', y + stickUpDown);
-}
+};
+
+function updateAxesGrid(axes) {
+    for (let i = 0; i < axes.length; i++) {
+        const axis = document.querySelector(`#axis-${i} .axis-value`);
+        const value = axes[i];
+        if (value > .1 || value < -0.1) {
+            axis.innerHTML = value.toFixed(4);
+        }
+    }
+};
 
 function handleSticks(axes) {
+    updateAxesGrid(axes);
     updateStick("controller-b10", axes[0], axes[1]);
     updateStick("controller-b11", axes[2], axes[3]);
-}
+};
 
 function gameLoop() {
     if (controllerIndex !== null) {
