@@ -36,7 +36,7 @@ function createButtonLayout(buttons) {
 };
 
 function createButtonHtml(index, value) {
-    return `<div class="button" id"button-${index}">
+    return `<div class="button" id="button-${index}">
                 <svg width="10px" height="50px">
                     <rect width="10px" height="50px" fill="grey"></rect>
                     <rect
@@ -55,3 +55,31 @@ function createButtonHtml(index, value) {
                 </div>
             </div>`;
 };
+
+function updateButtonOnGrid(index, value) {
+    const buttonArea = document.getElementById(`button-${index}`);
+    const buttonValue = buttonArea.querySelector(".button-value");
+    buttonValue.innerHTML = value.toFixed(2);
+
+    const buttonMeter = buttonArea.querySelector(".button-meter");
+    const meterHeight = Number(buttonMeter.dataset.originalYPosition);
+    const meterPosition = meterHeight - (meterHeight / 100) * (value * 100);
+    buttonMeter.setAttribute('y', meterPosition);
+}
+
+function handleButtons(buttons) {
+    for (let i = 0; i < buttons.length; i++) {
+        const buttonValue = buttons[i].value;
+        updateButtonOnGrid(i, buttonValue);
+    }
+}
+
+function gameLoop() {
+    if (controllerIndex !== null) {
+        const gamepad = navigator.getGamepads()[controllerIndex];
+        handleButtons(gamepad.buttons);
+    }
+    requestAnimationFrame(gameLoop);
+};
+
+gameLoop();
