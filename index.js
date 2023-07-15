@@ -137,11 +137,27 @@ function handleSticks(axes) {
     updateStick("controller-b11", axes[2], axes[3]);
 };
 
+function handleRumble(gamepad) {
+    const rumbleOnButtonPress = document.getElementById("rumble-on-button-press");
+
+    if (rumbleOnButtonPress.checked) {
+        if (gamepad.buttons.some(button => button.value > 0)) {
+            gamepad.vibrationActuator.playEffect("dual-rumble", {
+                startDelay: 0,
+                duration: 25,
+                weakMagnitude: 1.0,
+                strongMagnitude: 1.0,
+            });
+        }
+    }
+};
+
 function gameLoop() {
     if (controllerIndex !== null) {
         const gamepad = navigator.getGamepads()[controllerIndex];
         handleButtons(gamepad.buttons);
         handleSticks(gamepad.axes);
+        handleRumble(gamepad);
     }
     requestAnimationFrame(gameLoop);
 };
