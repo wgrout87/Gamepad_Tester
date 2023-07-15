@@ -20,3 +20,11 @@ h1 {
     font-weight: bold;
     text-align: center;
 }
+
+#controller-connected {
+    color: green;
+}
+
+#controller-connected-area {
+    display: none;
+}
