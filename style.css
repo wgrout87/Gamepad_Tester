@@ -15,3 +15,8 @@ h1 {
 .center {
     text-align: center;
 }
+
+.controller-status {
+    font-weight: bold;
+    text-align: center;
+}
